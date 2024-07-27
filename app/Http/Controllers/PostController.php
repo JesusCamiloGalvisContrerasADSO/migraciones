@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Models\Categories;
 use App\Models\post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate();
+        $posts = Post::paginate(5);
         return view('posts.index',compact("posts"));
     }
 
@@ -25,7 +26,8 @@ class PostController extends Controller
     public function create()
     {
         $users = User::pluck('name', "id");
-        return view("posts.create", compact("users"));
+        $categories = Categories::pluck('name','id');
+        return view("posts.create", compact("users", "categories"));
     }
 
     /**
@@ -37,28 +39,27 @@ class PostController extends Controller
         return redirect()->route("posts.index");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $users = User::pluck('name', "id");
+        $post = Post::where("id",$id) -> first();
+        return view("posts.edit", compact("users", "post"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostRequest $request, string $id)
     {
-        //
+        
+        $post = Post::where("id" ,$id) -> first();
+        $post = $post->update($request -> all());
+
+        return redirect() ->route("posts.index");
     }
 
     /**
@@ -66,6 +67,18 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::where("id" ,$id) -> first();
+        $post->delete();
+        return redirect()->route("posts.index");
     }
+
+
+    
+
+    // function users($id)
+    // {
+    //     $user = User::where("id" ,$id) -> first();
+    //     // dd($user->post()->paginate(2));
+        
+    // }
 }

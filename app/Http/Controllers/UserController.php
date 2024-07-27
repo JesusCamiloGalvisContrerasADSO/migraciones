@@ -82,4 +82,13 @@ class UserController extends Controller
         $user = User::where("id" ,$id) -> first();
         $user->delete()->back();
     }
+
+    public function posts(string $id)
+    {
+        $user = User::where("id" ,$id) -> first();
+        $posts = $user->posts;
+        return view("users.posts", compact("user", "posts"));
+        // dd($user->posts);
+        
+    }
 }

@@ -50,6 +50,8 @@ class User extends Authenticatable
 
     // uno a muchos 
 
+    //aqui accedemos al id del modelo 2
+
     public function posts()
     {
         return $this->hasMany(Post::class);

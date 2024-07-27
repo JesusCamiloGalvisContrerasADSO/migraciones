@@ -1,5 +1,5 @@
 <div>
-    <table>
+    <table border="1">
         <thead>
             <th>id</th>
             <th>nombre</th>
@@ -23,6 +23,8 @@
                     {{html()->modelForm($user)->route("users.destroy", $user->id)-> open()}}
                     <button>Eliminar</button>
                     {{html()->closeModelForm()}}
+
+                    <a href=" {{route("users.posts", $user->id)}}">Posts</a>
                 </td>
             </tr>
             @endforeach
