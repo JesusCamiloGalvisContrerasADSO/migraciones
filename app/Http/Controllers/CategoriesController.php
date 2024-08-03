@@ -39,6 +39,7 @@ class CategoriesController extends Controller
     public function edit($id)
     {
         $category = Categories::where("id" ,$id)->first();
+        
         return view("categories.edit",compact("category"));
     }
 

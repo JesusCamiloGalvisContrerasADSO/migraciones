@@ -17,6 +17,7 @@
         <td>{{$post->title}}</td>
         <td>{{$post->user->name }}</td>
         <td>{{$post->category->name ?? 'No tiene categoria'}}</td>
+        <td>{{$post->tags ?? 'No tiene tags'}}</td>
 
         
         <td><a href="{{route('posts.edit', $post->id )}}">Editar</a>

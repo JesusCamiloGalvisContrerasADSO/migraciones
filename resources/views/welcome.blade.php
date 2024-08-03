@@ -7,6 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="{{ route('users.index')}}"></a>
+    <a href="{{ route('users.index')}}">usuarios</a>
+    <br>
+    <a href="{{ route('posts.index')}}">post</a>
+    <br>
+    <a href="{{ route('categories.index')}}">categories</a>
+    <br>
+    <a href="{{ route('tags.index')}}">tags</a>
+
 </body>
 </html>

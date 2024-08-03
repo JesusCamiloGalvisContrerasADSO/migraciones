@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Models\Categories;
 use App\Models\post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\AssignOp\Pow;
+
+use function Laravel\Prompts\error;
 
 class PostController extends Controller
 {
@@ -27,7 +30,8 @@ class PostController extends Controller
     {
         $users = User::pluck('name', "id");
         $categories = Categories::pluck('name','id');
-        return view("posts.create", compact("users", "categories"));
+        $tags = Tag::all();
+        return view("posts.create", compact("users", "categories", "tags"));
     }
 
     /**
@@ -36,6 +40,9 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $post = Post::create($request->all());
+
+        // dd($request->all());    
+        $post->tags() ->sync($request->tag_id);
         return redirect()->route("posts.index");
     }
 
@@ -46,8 +53,9 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $users = User::pluck('name', "id");
+        $categories = Categories::pluck('name', "id");
         $post = Post::where("id",$id) -> first();
-        return view("posts.edit", compact("users", "post"));
+        return view("posts.edit", compact("users", "post","categories"));
     }
 
     /**
@@ -68,6 +76,7 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $post = Post::where("id" ,$id) -> first();
+        $post->tags()->delete();
         $post->delete();
         return redirect()->route("posts.index");
     }
